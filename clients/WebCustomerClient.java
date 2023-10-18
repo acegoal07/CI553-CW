@@ -13,25 +13,32 @@ import javax.swing.*;
  * @version 2.0
  */
 
-public class WebCustomerClient extends JApplet
-{
+public class WebCustomerClient extends JApplet {
+
   private static final long serialVersionUID = 1;
-  public void init ()
-  {
-    String supplied = getParameter( "stock" );  //
-    String stockURL = supplied.equals("")       // URL of stock R
-                      ? Names.STOCK_R           //  default  location
-                      : supplied;               //  supplied location
-                     
+  
+  public void init () {
+    String supplied = getParameter( "stock" );
+    // URL of stock R
+    String stockURL = "".equals(supplied)
+      //  default  location
+      ? Names.STOCK_R
+      //  supplied location
+      : supplied;
+
     System.out.println("URL " + stockURL );
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory(); 
+    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
     mrf.setStockRInfo( stockURL );
-    displayGUI(mrf);                            // Create GUI
+    // Create GUI
+    displayGUI(mrf);
   }
-   
-  public void displayGUI( MiddleFactory mf )
-  {
-    DEBUG.trace( "Need to add code" );
-    //new CustomerGUI( this, mf, 0, 0 ); 
+
+  /**
+   * Create the GUI
+   * @param mf The factory to create the objects
+   */
+  public void displayGUI(MiddleFactory mf) {
+    DEBUG.trace("Need to add code");
+    //new CustomerGUI( this, mf, 0, 0 );
   }
 }

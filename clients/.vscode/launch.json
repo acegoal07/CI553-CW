@@ -1,0 +1,18 @@
+{
+   "configurations": [
+      {
+         "type": "java",
+         "name": "Main",
+         "request": "launch",
+         "mainClass": "clients.Main",
+         "projectName": "CI553-CW_dfb3c7a"
+      },
+      {
+         "type": "java",
+         "name": "Launch Java Program",
+         "request": "launch",
+         "mainClass": "Main",
+         "vmArgs": "--module-path \"./jdks/javafx/lib\" --add-modules javafx.controls,javafx.fxml"
+      }
+   ]
+}

@@ -9,61 +9,70 @@ import java.awt.geom.Rectangle2D;
  * @author  Mike Smith University of Brighton
  * @version 1.0
  */
-public class Picture extends Canvas
-{
+public class Picture extends Canvas {
   private static final long serialVersionUID = 1;
   private int   width      = 260;
   private int   height     = 260;
   private Image thePicture = null;
 
-  public Picture()
-  {
+  /**
+   * Create a picture
+   */
+  public Picture() {
     setSize( width, height );
   }
-  
-  public Picture(int aWidth, int aHeight)
-  {
+  /**
+   * Create a picture of a given size
+   * @param aWidth The Given width
+   * @param aHeight The given height
+   */
+  public Picture(int aWidth, int aHeight) {
     width = aWidth;
     height= aHeight;
     setSize( width, height );
   }
-
-  public void set( ImageIcon ic )
-  {
-    thePicture = ic.getImage();         // Image to be drawn
+  /**
+   * Set the picture to be displayed
+   * @param ic The picture
+   */
+  public void set( ImageIcon ic ) {
+    // Image to be drawn
+    thePicture = ic.getImage();
     repaint();
   }
-    
-  public void clear()
-  {
-    thePicture = null;                  // clear picture
-    repaint();                          // Force repaint
+  /**
+   * Force a repaint of the picture
+   */
+  public void clear() {
+    // clear picture
+    thePicture = null;
+    // Force repaint
+    repaint();
   }
-
-  public void paint( Graphics g )       // When 'Window' is first
-  {                                     //  shown or damaged
+  /**
+   * When 'Window' is first shown or damaged
+   */
+  public void paint( Graphics g ) {
     drawImage( (Graphics2D) g );
   }
-  
-  public void update( Graphics g )      // Called by repaint
-  {                                     //
-    drawImage( (Graphics2D) g );        // Draw picture
+  /**
+   * Called by repaint
+   */
+  public void update(Graphics g) {
+    // Draw picture
+    drawImage((Graphics2D) g);
   }
-
   /**
    * Draw the picture
-   * First set the area to white and then 
-   *  draw the image 
-   * @param g Grapics context
+   * First set the area to white and then
+   *  draw the image
+   * @param g Graphics context
    */
-
-  public void drawImage( Graphics2D g )
-  {
+  public void drawImage(Graphics2D g) {
     setSize( width, height );
     g.setPaint( Color.white );
     g.fill( new Rectangle2D.Double( 0, 0, width, height ) );
-    if ( thePicture != null )
-    {
+    if (thePicture != null) {
       g.drawImage(thePicture, 0, 0, null);
     }
   }
