@@ -18,12 +18,12 @@ public class WebCustomerClient extends JApplet {
   private static final long serialVersionUID = 1;
   
   public void init () {
-    String supplied = getParameter( "stock" );
+    String supplied = getParameter("stock");
     // URL of stock R
     String stockURL = "".equals(supplied)
-      //  default  location
+      // default  location
       ? Names.STOCK_R
-      //  supplied location
+      // supplied location
       : supplied;
 
     System.out.println("URL " + stockURL );

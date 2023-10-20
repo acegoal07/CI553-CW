@@ -19,22 +19,25 @@ public class CashierController {
     this.view  = view;
     this.model = model;
   }
-
   /**
    * Check interaction from view
    * @param pn The product number to be checked
    */
-  public void doCheck(String pn) {
-    model.doCheck(pn);
+  public void doCheck(String pn, int pq) {
+    model.doCheck(pn, pq);
   }
-
   /**
    * Buy interaction from view
    */
   public void doBuy() {
     model.doBuy();
   }
-  
+  /**
+   * Cancel interaction from view
+   */
+  public void doCancel() {
+    model.doCancel();
+  }
   /**
    * Bought interaction from view
    */

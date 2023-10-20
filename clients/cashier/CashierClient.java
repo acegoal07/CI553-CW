@@ -18,13 +18,13 @@ public class CashierClient {
   public static void main (String[] args) {
     // URL of stock RW
      String stockURL = args.length < 1
-      //  default  location
+      // default  location
       ? Names.STOCK_RW
-      //  supplied location
+      // supplied location
       : args[0];
     // URL of order
      String orderURL = args.length < 2
-      //  default  location
+      // default  location
       ? Names.ORDER
       //  supplied location
       : args[1];

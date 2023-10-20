@@ -13,115 +13,156 @@ import java.util.Observer;
 
 /**
  * View of the model
- * @author  M A Smith (c) June 2014  
+ * @author  M A Smith (c) June 2014
  */
-public class CashierView implements Observer
-{
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
-  
-  private static final String CHECK  = "Check";
-  private static final String BUY    = "Buy";
+public class CashierView implements Observer {
+  // Height of window pixels
+  private static final int H = 300;
+  // Width  of window pixels
+  private static final int W = 400;
+
+  private static final String CHECK = "Check";
+  private static final String BUY = "Buy";
+  private static final String CANCEL = "Cancel";
   private static final String BOUGHT = "Bought";
 
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtCheck = new JButton( CHECK );
-  private final JButton     theBtBuy   = new JButton( BUY );
-  private final JButton     theBtBought= new JButton( BOUGHT );
+  private final JLabel theAction = new JLabel();
+  private final JTextField theInput = new JTextField();
+  private final JTextArea theOutput = new JTextArea();
+  private final JScrollPane theSP = new JScrollPane();
+  private final JButton theBtCheck = new JButton(CHECK);
+  private final JButton theBtBuy = new JButton(BUY);
+  private final JButton theBtCancel = new JButton(CANCEL);
+  private final JButton theBtBought= new JButton(BOUGHT);
+  private final JSpinner theQuantity = new JSpinner(new SpinnerNumberModel(1, 0, 50, 1));
 
-  private StockReadWriter theStock     = null;
-  private OrderProcessing theOrder     = null;
-  private CashierController cont       = null;
-  
+  private StockReadWriter theStock = null;
+  private OrderProcessing theOrder = null;
+  private CashierController cont = null;
+
   /**
    * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-coordinate of position of window on screen 
-   * @param y     y-coordinate of position of window on screen  
+   * @param rpc Window in which to construct
+   * @param mf Factor to deliver order and stock objects
+   * @param x x-coordinate of position of window on screen
+   * @param y y-coordinate of position of window on screen
    */
-          
-  public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
-  {
-    try                                           // 
-    {      
-      theStock = mf.makeStockReadWriter();        // Database access
-      theOrder = mf.makeOrderProcessing();        // Process order
-    } catch ( Exception e )
-    {
+  public CashierView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
+    try {
+      // Database access
+      theStock = mf.makeStockReadWriter();
+      // Process order
+      theOrder = mf.makeOrderProcessing();
+    } catch (Exception e) {
       System.out.println("Exception: " + e.getMessage() );
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
+    // Content Pane
+    Container cp = rpc.getContentPane();
+    // Root Window
+    Container rootWindow = (Container) rpc;
+    // No layout manager
+    cp.setLayout(null);
+    // Size of Window
+    rootWindow.setSize(W, H);
+    rootWindow.setLocation(x, y);
 
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    // Font f is
+    Font f = new Font("Monospaced",Font.PLAIN,12);
 
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
-    theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
-    cp.add( theBtCheck );                           //  Add to canvas
+    // Check Button
+    theBtCheck.setBounds(16, 25+60*0, 80, 40);
+    // Call back code
+    theBtCheck.addActionListener(e -> cont.doCheck(theInput.getText(), (int) theQuantity.getValue()));
+    // Add to canvas
+    cp.add( theBtCheck );
 
-    theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
-    theBtBuy.addActionListener(                     // Call back code
-      e -> cont.doBuy() );
-    cp.add( theBtBuy );                             //  Add to canvas
+    // Buy button
+    theBtBuy.setBounds(16, 25+60*1, 80, 40);
+    // Call back code
+    theBtBuy.addActionListener(e -> {
+      cont.doBuy();
+      theInput.setText("");
+      theQuantity.setValue(1);
+    });
+    // Add to canvas
+    cp.add(theBtBuy);
 
-    theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Clear Button
-    theBtBought.addActionListener(                  // Call back code
-      e -> cont.doBought() );
-    cp.add( theBtBought );                          //  Add to canvas
+    // Cancel Button
+    theBtCancel.setBounds(16, 25+60*2, 80, 40);
+    // Call back code
+    theBtCancel.addActionListener(e -> {
+      cont.doCancel();
+      theInput.setText("");
+      theQuantity.setValue(1);
+    });
+    // Add to canvas
+    cp.add(theBtCancel);
 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
+    // Clear Button
+    theBtBought.setBounds(16, 25+60*3, 80, 40);
+    // Call back code
+    theBtBought.addActionListener(e -> cont.doBought());
+    // Add to canvas
+    cp.add(theBtBought);
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Input Area
-    theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
+    // Message area
+    theAction.setBounds(110, 25 , 270, 20);
+    // Blank
+    theAction.setText("");
+    // Add to canvas
+    cp.add(theAction);
 
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
-    theInput.requestFocus();                        // Focus is here
+    // Input Area
+    theInput.setBounds(110, 50, 222, 40);
+    // Blank
+    theInput.setText("");
+    // Add to canvas
+    cp.add(theInput);
+
+    // Amount spinner
+    theQuantity.setBounds(330, 50, 50, 40);
+    // Add to canvas
+    cp.add(theQuantity);
+
+    // Scrolling pane
+    theSP.setBounds(110, 100, 270, 160);
+    // Blank
+    theOutput.setText("");
+    // Uses font
+    theOutput.setFont(f);
+    // Add to canvas
+    cp.add(theSP);
+    // In TextArea
+    theSP.getViewport().add(theOutput);
+    // Make visible
+    rootWindow.setVisible(true);
+    // Focus is here
+    theInput.requestFocus();
   }
-
   /**
    * The controller object, used so that an interaction can be passed to the controller
-   * @param c   The controller
+   * @param c The controller
    */
-
-  public void setController( CashierController c )
-  {
+  public void setController(CashierController c) {
     cont = c;
   }
-
   /**
    * Update the view
-   * @param modelC   The observed model
-   * @param arg      Specific args 
+   * @param modelC The observed model
+   * @param arg Specific args
    */
   @Override
-  public void update( Observable modelC, Object arg )
-  {
-    CashierModel model  = (CashierModel) modelC;
-    String      message = (String) arg;
-    theAction.setText( message );
+  public void update(Observable modelC, Object arg) {
+    CashierModel model = (CashierModel) modelC;
+    String message = (String) arg;
+    theAction.setText(message);
     Basket basket = model.getBasket();
-    if ( basket == null )
-      theOutput.setText( "Customers order" );
-    else
-      theOutput.setText( basket.getDetails() );
-    
-    theInput.requestFocus();               // Focus is here
+    if (basket == null) {
+      theOutput.setText("Customers order");
+    } else {
+      theOutput.setText(basket.getDetails());
+    }
+    // Focus is here
+    theInput.requestFocus();
   }
-
 }

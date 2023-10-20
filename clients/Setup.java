@@ -107,60 +107,56 @@ class Setup
       try
       {
         System.out.println( sqlStatement );
-        switch ( sqlStatement.charAt(0) )
-        {
+        switch (sqlStatement.charAt(0)) {
            case '/' :
              System.out.println("------------------------------");
              break;
            case 's' :
            case 'f' :
-             query( stmt, dbDriver.urlOfDatabase(), sqlStatement );
+             query(stmt, dbDriver.urlOfDatabase(), sqlStatement);
              break;
            case '*' :
-             if ( sqlStatement.length() >= 2 )
-               switch( sqlStatement.charAt(1)  )
-               {
-                 case 'c' :
-                   theCon.commit();
-                   break;
-                 case 'r' :
-                   theCon.rollback();
-                   break;
-                 case '+' :
-                   theCon.setAutoCommit( true );
-                   break;
-                 case '-' :
-                   theCon.setAutoCommit( false );
-                   break;
-                }
+             if (sqlStatement.length() >= 2) {
+              switch(sqlStatement.charAt(1)) {
+                case 'c' :
+                  theCon.commit();
+                  break;
+                case 'r' :
+                  theCon.rollback();
+                  break;
+                case '+' :
+                  theCon.setAutoCommit(true);
+                  break;
+                case '-' :
+                  theCon.setAutoCommit(false);
+                  break;
+              }
+            }
               break;
            default :
             stmt.execute(sqlStatement);
         }
         //System.out.println();
-      } catch (Exception e)
-      {
-        System.out.println("problems with SQL sent to " +
-                           dbDriver.urlOfDatabase() +
-                           "\n" + sqlStatement + "\n" + e.getMessage());
+      } catch (Exception e) {
+        System.out.println("problems with SQL sent to " + dbDriver.urlOfDatabase() +
+          "\n" + sqlStatement + "\n" + e.getMessage());
       }
     }
 
     try {
       theCon.close();
-    } catch (Exception e)
-    {
-      System.err.println("problems with close " +
-                         ": "+e.getMessage());
+    } catch (Exception e) {
+      System.err.println("problems with close " + ": "+e.getMessage());
     }
-
   }
-
-
-  private static void query( Statement stmt, String url, String stm )
-  {
-    try
-    {
+  /**
+   * Execute a query
+   * @param stmt statement to use
+   * @param url URL of database
+   * @param stm SQL to execute
+   */
+  private static void query( Statement stmt, String url, String stm ) {
+    try {
       ResultSet res = stmt.executeQuery( stm );
       
       ArrayList<String> names = new ArrayList<>(10);
@@ -168,52 +164,47 @@ class Setup
       ResultSetMetaData md = res.getMetaData();
       int cols = md.getColumnCount();
 
-      for ( int j=1; j<=cols; j++ )
-      {
+      for (int j=1; j<=cols; j++) {
         String name = md.getColumnName(j);
-        System.out.printf( "%-14.14s ", name );
-        names.add( name );
+        System.out.printf("%-14.14s ", name);
+        names.add(name);
       }
-      System.out.println();
 
-      for ( int j=1; j<=cols; j++ )
-      {
-        System.out.printf( "%-14.14s ",  md.getColumnTypeName(j)  );
+      System.out.println();
+      for (int j=1; j<=cols; j++) {
+        System.out.printf("%-14.14s ", md.getColumnTypeName(j));
       }
-      System.out.println();
 
-      while ( res.next() )
-      {
-        for ( int j=0; j<cols; j++ )
-        {
+      System.out.println();
+      while (res.next()) {
+        for (int j=0; j<cols; j++) {
           String name = names.get(j);
-          System.out.printf( "%-14.14s ", res.getString( name )  );
+          System.out.printf("%-14.14s ", res.getString(name));
         }
         System.out.println();
       }
 
-
-    } catch (Exception e)
-    {
+    } catch (Exception e) {
       System.err.println("problems with SQL sent to "+url+
-                         "\n" + e.getMessage());
+        "\n" + e.getMessage());
     }
   }
-  
-  private static String m( int len, String s )
-  {
-    if ( s.length() >= len )
-    {
-      return s.substring( 0, len-1 ) + " ";
-    }
-    else
-    {
-      StringBuilder res = new StringBuilder( len );
-      res.append( s );
-      for ( int i = s.length(); i<len; i++ )
-        res.append( ' ' );
+  /**
+   * Make a string of length len from s
+   * @param len length of string
+   * @param s string to use
+   * @return string of length len
+   */
+  private static String m(int len, String s) {
+    if (s.length() >= len) {
+      return s.substring(0, len-1) + " ";
+    } else {
+      StringBuilder res = new StringBuilder(len);
+      res.append(s);
+      for (int i = s.length(); i<len; i++) {
+        res.append(' ');
+      }
       return res.toString();
     }
   }
-
 }

@@ -11,8 +11,8 @@ import java.awt.geom.Rectangle2D;
  */
 public class Picture extends Canvas {
   private static final long serialVersionUID = 1;
-  private int   width      = 260;
-  private int   height     = 260;
+  private int width = 260;
+  private int height = 260;
   private Image thePicture = null;
 
   /**
