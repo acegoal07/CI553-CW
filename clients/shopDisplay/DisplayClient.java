@@ -3,7 +3,6 @@ package clients.shopDisplay;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
 import javax.swing.*;
 
 /**

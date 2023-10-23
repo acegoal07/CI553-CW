@@ -4,7 +4,6 @@ import catalogue.Basket;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
@@ -21,20 +20,26 @@ public class CashierView implements Observer {
   // Width  of window pixels
   private static final int W = 400;
 
-  private static final String CHECK = "Check";
-  private static final String BUY = "Buy";
-  private static final String CANCEL = "Cancel";
-  private static final String BOUGHT = "Bought";
+  /**
+   * Name of buttons
+   */
+  class name {
+    public static final String CHECK  = "Check";
+    public static final String BUY  = "Buy";
+    public static final String BOUGHT  = "Bought";
+    public static final String CANCEL  = "Cancel";
+  }
 
   private final JLabel theAction = new JLabel();
+  private final JLabel theQuantityLabel = new JLabel();
   private final JTextField theInput = new JTextField();
   private final JTextArea theOutput = new JTextArea();
   private final JScrollPane theSP = new JScrollPane();
-  private final JButton theBtCheck = new JButton(CHECK);
-  private final JButton theBtBuy = new JButton(BUY);
-  private final JButton theBtCancel = new JButton(CANCEL);
-  private final JButton theBtBought= new JButton(BOUGHT);
-  private final JSpinner theQuantity = new JSpinner(new SpinnerNumberModel(1, 0, 50, 1));
+  private final JButton theBtCheck = new JButton(name.CHECK);
+  private final JButton theBtBuy = new JButton(name.BUY);
+  private final JButton theBtCancel = new JButton(name.CANCEL);
+  private final JButton theBtBought= new JButton(name.BOUGHT);
+  private final JSpinner theQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
 
   private StockReadWriter theStock = null;
   private OrderProcessing theOrder = null;
@@ -66,15 +71,12 @@ public class CashierView implements Observer {
     rootWindow.setSize(W, H);
     rootWindow.setLocation(x, y);
 
-    // Font f is
-    Font f = new Font("Monospaced",Font.PLAIN,12);
-
     // Check Button
     theBtCheck.setBounds(16, 25+60*0, 80, 40);
     // Call back code
     theBtCheck.addActionListener(e -> cont.doCheck(theInput.getText(), (int) theQuantity.getValue()));
     // Add to canvas
-    cp.add( theBtCheck );
+    cp.add(theBtCheck);
 
     // Buy button
     theBtBuy.setBounds(16, 25+60*1, 80, 40);
@@ -90,11 +92,7 @@ public class CashierView implements Observer {
     // Cancel Button
     theBtCancel.setBounds(16, 25+60*2, 80, 40);
     // Call back code
-    theBtCancel.addActionListener(e -> {
-      cont.doCancel();
-      theInput.setText("");
-      theQuantity.setValue(1);
-    });
+    theBtCancel.addActionListener(e -> cont.doCancel());
     // Add to canvas
     cp.add(theBtCancel);
 
@@ -119,6 +117,12 @@ public class CashierView implements Observer {
     // Add to canvas
     cp.add(theInput);
 
+    // Amount label 
+    theQuantityLabel.setText("Amount");
+    // Set Location
+    theQuantityLabel.setBounds(330, 15, 50, 40);
+    // Added to canvas
+    cp.add(theQuantityLabel);
     // Amount spinner
     theQuantity.setBounds(330, 50, 50, 40);
     // Add to canvas
@@ -129,7 +133,7 @@ public class CashierView implements Observer {
     // Blank
     theOutput.setText("");
     // Uses font
-    theOutput.setFont(f);
+    theOutput.setFont(new Font("Monospaced",Font.PLAIN,12));
     // Add to canvas
     cp.add(theSP);
     // In TextArea

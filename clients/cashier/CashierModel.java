@@ -3,8 +3,12 @@ package clients.cashier;
 import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
-import middle.*;
-
+import middle.MiddleFactory;
+import middle.OrderException;
+import middle.OrderProcessing;
+import middle.StockException;
+import middle.StockReadWriter;
+import java.util.Locale;
 import java.util.Observable;
 
 /**
@@ -14,19 +18,21 @@ import java.util.Observable;
  */
 public class CashierModel extends Observable {
 
+  // Possible states of the client
   private enum State {process, checked}
 
   // Current state
   private State theState = State.process;
   // Current product
-  private Product theProduct = null;
+  private Product theProduct;
   // Bought items
-  private Basket theBasket = null;
+  private Basket theBasket;
   // Product being processed
   private String pn = "";
 
-  private StockReadWriter theStock = null;
-  private OrderProcessing theOrder = null;
+  // The data for the current product
+  private StockReadWriter theStock;
+  private OrderProcessing theOrder;
 
   /**
    * Construct the model of the Cashier
@@ -72,7 +78,7 @@ public class CashierModel extends Observable {
         // In stock?
         if (pr.getQuantity() >= amount) {
           // Display
-          theAction = String.format("%s : %7.2f (%2d) ",
+          theAction = String.format(Locale.UK, "%s : %7.2f (%2d) ",
             // description
             pr.getDescription(),
             // price
@@ -140,40 +146,58 @@ public class CashierModel extends Observable {
     notifyObservers(theAction);
   }
   /**
+   * Cancel the sale
+   */
+  public void doCancel() {
+    String theAction = "";
+    try {
+      // items > 1
+      if (theBasket != null && !theBasket.isEmpty()) {
+        // Cancel order
+        for (Product pr : theBasket) {
+          theStock.addStock(pr.getProductNum(), pr.getQuantity());
+        }
+        // reset
+        theBasket = null;
+        // New Customer
+        theAction = "Next customer";
+      } else {
+        // no items
+        theAction = "No items to cancel";
+      }
+    } catch(StockException e) {
+      DEBUG.error("%s\n%s", "CashierModel.doBuy", e.getMessage());
+      theAction = e.getMessage();
+    }
+    // All done
+    theState = State.process;
+    setChanged();
+    notifyObservers(theAction);
+  }
+  /**
    * Customer pays for the contents of the basket
    */
   public void doBought() {
     String theAction = "";
     try {
       // items > 1
-      if (theBasket != null && theBasket.size() >= 1) {
+      if (theBasket != null && !theBasket.isEmpty()) {
         // Process order
         theOrder.newOrder(theBasket);
         // reset
         theBasket = null;
+        // New Customer
+        theAction = "Next customer";
+      } else {
+        //  no items
+        theAction = "No items bought";
       }
-      // New Customer
-      theAction = "Next customer";
       // All Done
       theState = State.process;
-      theBasket = null;
     } catch(OrderException e) {
       DEBUG.error("%s\n%s", "CashierModel.doCancel", e.getMessage());
       theAction = e.getMessage();
     }
-    theBasket = null;
-    setChanged();
-    notifyObservers(theAction);
-  }
-  /**
-   * Cancel the sale
-   */
-  public void doCancel() {
-    String theAction = "";
-    // New Customer
-    theAction = "Next customer";
-    // All Done
-    theState = State.process;
     theBasket = null;
     setChanged();
     notifyObservers(theAction);
@@ -184,7 +208,7 @@ public class CashierModel extends Observable {
    */
   public void askForUpdate() {
     setChanged();
-    notifyObservers("Welcome");
+    notifyObservers("Enter product ID");
   }
   /**
    * make a Basket when required
@@ -193,7 +217,7 @@ public class CashierModel extends Observable {
     if (theBasket == null) {
       try {
         // Unique order num.
-        int uon   = theOrder.uniqueNumber();
+        int uon = theOrder.uniqueNumber();
         // basket list
         theBasket = makeBasket();
         // Add an order number

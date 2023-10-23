@@ -1,14 +1,13 @@
 package clients.cashier;
 
-
 /**
  * The Cashier Controller
  * @author M A Smith (c) June 2014
  */
 
 public class CashierController {
-  private CashierModel model = null;
-  private CashierView  view  = null;
+  private CashierModel model;
+  private CashierView  view;
 
   /**
    * Constructor

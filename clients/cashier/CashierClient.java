@@ -4,7 +4,6 @@ import catalogue.*;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
 import javax.swing.*;
 
 /**
@@ -35,7 +34,6 @@ public class CashierClient {
     // Create GUI
     displayGUI(mrf);
   }
-
   /**
    * Create the GUI
    * @param mf The middle factory to use
