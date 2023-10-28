@@ -30,6 +30,7 @@ public class BackDoorView implements Observer {
 
   private final JLabel theAction = new JLabel();
   private final JLabel theQuantityLabel = new JLabel();
+  private final JLabel theOutputLabel = new JLabel();
   private final JTextField theInput = new JTextField();
   private final JTextArea theOutput = new JTextArea();
   private final JScrollPane theSP = new JScrollPane();
@@ -114,8 +115,14 @@ public class BackDoorView implements Observer {
     // Add to canvas
     cp.add(theQuantity);
 
+    // Scrolling pane label
+    theOutputLabel.setBounds(110, 100, 270, 20);
+    // Set text
+    theOutputLabel.setText("Restock details");
+    // Display
+    cp.add(theOutputLabel);
     // Scrolling pane
-    theSP.setBounds(110, 100, 270, 160);
+    theSP.setBounds(110, 120, 270, 130);
     // Blank
     theOutput.setText("");
     // Uses font

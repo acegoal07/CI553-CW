@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Observable;
 
 // File is complete but not optimal
-//  Will force update of display every 2 seconds
-//  Could be clever & only ask for an update of the display 
+//  Will force update of display every 1 seconds
+//  Could be clever & only ask for an update of the display
 //   if it really has changed
 
 /**
@@ -19,56 +19,46 @@ import java.util.Observable;
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-
-public class DisplayModel extends Observable
-{
-  private OrderProcessing theOrder = null;
+public class DisplayModel extends Observable {
+  // The data for the display
+  private OrderProcessing theOrder;
 
   /**
    * Set up initial connection to the order processing system
    * @param mf Factory to return an object to access the order processing system
    */
-  public DisplayModel( MiddleFactory mf  )
-  {
-    try                                           // 
-    {      
-      theOrder = mf.makeOrderProcessing();        // Process order
-    } catch ( Exception e )
-    {
-      // Serious error in system (Should not occure)
-      DEBUG.error("ModelOfDisplay: " + e.getMessage() );
+  public DisplayModel(MiddleFactory mf) {
+    try {
+      // Process order
+      theOrder = mf.makeOrderProcessing();
+    } catch (Exception e) {
+      // Serious error in system (Should not occur)
+      DEBUG.error("ModelOfDisplay: " + e.getMessage());
     }
-    new Thread( () -> backgroundRun() ).start();
-    
+    new Thread(this::backgroundRun).start();
   }
-  
- /**
+  /**
    * Run as a thread in background to continually update the display
    */
-  public void backgroundRun()
-  {
-    while ( true )                               // Forever                    
-    {
-     try
-      {
-        Thread.sleep(2000);
-        DEBUG.trace( "ModelOfDisplay call view" );
-        setChanged(); notifyObservers();
-      }
-      catch ( InterruptedException e )
-      {
-        DEBUG.error( "%s\n%s\n",
-                    "ModelOfDisplay.run()",
-                    e.getMessage() );
+  public void backgroundRun() {
+    // Forever
+    while (true) {
+      try {
+        Thread.sleep(1000);
+        DEBUG.trace("ModelOfDisplay call view");
+        setChanged();
+        notifyObservers();
+      } catch (InterruptedException e) {
+        DEBUG.error("%s\n%s\n",  "ModelOfDisplay.run()", e.getMessage());
       }
     }
   }
-  
- // Will be called by the viewOfDisplay
- //   when it is told that the view has changed
- public synchronized Map<String, List<Integer> > getOrderState()
-       throws OrderException
- {
-   return theOrder.getOrderState();
- }
+  /**
+   * Return the current state of the order processing system
+   * @return Map of order state
+   * @throws OrderException if communication error
+   */
+  public synchronized Map<String, List<Integer> > getOrderState() throws OrderException {
+    return theOrder.getOrderState();
+  }
 }

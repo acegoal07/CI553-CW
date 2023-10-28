@@ -32,6 +32,7 @@ public class CashierView implements Observer {
 
   private final JLabel theAction = new JLabel();
   private final JLabel theQuantityLabel = new JLabel();
+  private final JLabel theOutputLabel = new JLabel();
   private final JTextField theInput = new JTextField();
   private final JTextArea theOutput = new JTextArea();
   private final JScrollPane theSP = new JScrollPane();
@@ -88,20 +89,20 @@ public class CashierView implements Observer {
     });
     // Add to canvas
     cp.add(theBtBuy);
-
-    // Cancel Button
-    theBtCancel.setBounds(16, 25+60*2, 80, 40);
-    // Call back code
-    theBtCancel.addActionListener(e -> cont.doCancel());
-    // Add to canvas
-    cp.add(theBtCancel);
-
-    // Clear Button
-    theBtBought.setBounds(16, 25+60*3, 80, 40);
+    
+    // Bought Button
+    theBtBought.setBounds(16, 25+60*2, 80, 40);
     // Call back code
     theBtBought.addActionListener(e -> cont.doBought());
     // Add to canvas
     cp.add(theBtBought);
+
+    // Cancel Button
+    theBtCancel.setBounds(16, 25+60*3, 80, 40);
+    // Call back code
+    theBtCancel.addActionListener(e -> cont.doCancel());
+    // Add to canvas
+    cp.add(theBtCancel);
 
     // Message area
     theAction.setBounds(110, 25 , 270, 20);
@@ -128,8 +129,14 @@ public class CashierView implements Observer {
     // Add to canvas
     cp.add(theQuantity);
 
+    // Scrolling pane label
+    theOutputLabel.setBounds(110, 100, 270, 20);
+    // Set text
+    theOutputLabel.setText("Basket");
+    // Display
+    cp.add(theOutputLabel);
     // Scrolling pane
-    theSP.setBounds(110, 100, 270, 160);
+    theSP.setBounds(110, 120, 270, 130);
     // Blank
     theOutput.setText("");
     // Uses font

@@ -18,150 +18,153 @@ import java.util.Observer;
  * @author  Mike Smith University of Brighton
  * @version 1.0
  */
-public class DisplayView extends Canvas implements Observer
-{
-  private static final long serialVersionUID = 1L;
-  private Font font = new Font("Monospaced",Font.BOLD,24);
-  private int H = 300;         // Height of window 
-  private int W = 400;         // Width  of window 
+public class DisplayView extends Canvas implements Observer {
+
+  // Height of window
+  private int H = 300;
+  // Width of window
+  private int W = 400;
   private String textToDisplay = "";
-  private DisplayController cont= null;
-  
+  private DisplayController cont;
+
   /**
    * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-coordinate of position of window on screen 
-   * @param y     y-coordinate of position of window on screen  
+   * @param rpc Window in which to construct
+   * @param mf Factor to deliver order and stock objects
+   * @param x x-coordinate of position of window on screen
+   * @param y y-coordinate of position of window on screen
    */
-  
-  public DisplayView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout( new BorderLayout() );             // Border N E S W CENTER 
-    rootWindow.setSize( W, H );                     // Size of Window  
-    rootWindow.setLocation( x, y );                 // Position on screen
-    rootWindow.add( this, BorderLayout.CENTER );    //  Add to rootwindow
-    
-    rootWindow.setVisible( true );                  // Make visible
+  public DisplayView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
+    // Content Pane
+    Container cp = rpc.getContentPane();
+    // Root Window
+    Container rootWindow = (Container) rpc;
+    // Border N E S W CENTER
+    cp.setLayout(new BorderLayout());
+    // Size of Window
+    rootWindow.setSize(W, H);
+    // Position on screen
+    rootWindow.setLocation(x, y);
+    // Add to root window
+    rootWindow.add(this, BorderLayout.CENTER);
+
+    // Make visible
+    rootWindow.setVisible(true);
   }
-  
-  
-  public void setController( DisplayController c )
-  {
+  /**
+   * Set the controller
+   * @param c The controller object
+   */
+  public void setController(DisplayController c) {
     cont = c;
   }
-  
   /**
    * Called to update the display in the shop
    */
   @Override
-  public void update( Observable aModelOfDisplay, Object arg )
-  {
+  public void update(Observable aModelOfDisplay, Object arg) {
     // Code to update the graphical display with the current
     //  state of the system
     //  Orders awaiting processing
-    //  Orders being picked in the 'warehouse. 
+    //  Orders being picked in the 'warehouse.
     //  Orders awaiting collection
-    
-    try
-    {
-      Map<String, List<Integer> > res =
-      ( (DisplayModel) aModelOfDisplay ).getOrderState();
-
-      textToDisplay = 
-           "Orders in system" + "\n" +
-           "Waiting        : " + listOfOrders( res, "Waiting" ) + 
-           "\n"  + 
-           "Being picked   : " + listOfOrders( res, "BeingPicked" ) + 
-           "\n"  + 
-           "To Be Collected: " + listOfOrders( res, "ToBeCollected" );
-    }
-    catch ( OrderException err )
-    {
+    try {
+      Map<String, List<Integer>> res = ((DisplayModel) aModelOfDisplay).getOrderState();
+      textToDisplay =
+        "  Orders in system" + "\n" +
+        "  Waiting        : " + listOfOrders(res, "Waiting") +
+        "\n"  +
+        "  Being picked   : " + listOfOrders(res, "BeingPicked") +
+        "\n"  +
+        "  To Be Collected: " + listOfOrders(res, "ToBeCollected");
+    } catch (OrderException err) {
       textToDisplay = "\n" + "** Communication Failure **";
     }
-    repaint();                            // Draw graphically    
+    // Draw graphically
+    repaint();
   }
-  
+  /**
+   * Update the display
+   */
   @Override
-  public void update( Graphics g )        // Called by repaint
-  {                                       // 
-    drawScreen( (Graphics2D) g );         // Draw information on screen
+  public void update(Graphics g) {
+    // Draw information on screen
+    drawScreen((Graphics2D) g);
+  }
+  /**
+   * Redraw the screen double buffered
+   * @param g Graphics context
+   */
+  @Override
+  public void paint(Graphics g) {
+    // Draw information on screen
+    drawScreen((Graphics2D) g);
   }
 
-    /**
-     * Redraw the screen double buffered
-     * @param g Graphics context
-     */
-  @Override 
-  public void paint( Graphics g )         // When 'Window' is first 
-  {                                       //  shown or damaged 
-    drawScreen( (Graphics2D) g );         // Draw information on screen
-  }
+  // Alternate Dimension
+  private Dimension theAD;
+  // Alternate Image
+  private BufferedImage theAI;
+  // Alternate Graphics
+  private Graphics2D theAG;
 
-  private Dimension     theAD;           // Alternate Dimension
-  private BufferedImage theAI;           // Alternate Image
-  private Graphics2D    theAG;           // Alternate Graphics
-  
-  public void drawScreen( Graphics2D g )  // Re draw contents 
-  {                                         //  allow resize
-    Dimension d    = getSize();             // Size of image
+  /**
+   * Redraw the screen double buffered
+   * @param g Graphics context
+   */
+  public void drawScreen(Graphics2D g) {
+    // Size of image
+    Dimension d = getSize();
 
-    if (  ( theAG == null )           ||
-          ( d.width  != theAD.width ) ||
-          ( d.height != theAD.height )   )
-    {                                       // New size
+    if (
+      (theAG == null) ||
+      (d.width  != theAD.width) ||
+      (d.height != theAD.height)
+    ) {
       theAD = d;
-      theAI = (BufferedImage) createImage( d.width, d.height );
+      theAI = (BufferedImage) createImage(d.width, d.height);
       theAG = theAI.createGraphics();
     }
-    drawActualScreen( theAG );            // draw
-    g.drawImage( theAI, 0, 0, this );     // Now on screen
+    // draw
+    drawActualScreen(theAG);
+    g.drawImage(theAI, 0, 0, this);
   }
-  
   /**
    * Redraw the screen
    * @param g Graphics context
    */
- 
-  public void drawActualScreen( Graphics2D g )  // Re draw contents 
-  {
-    g.setPaint( Color.white );            // Paint Colour 
-    W = getWidth(); H = getHeight();      // Current size
-    
-    g.setFont( font );
-    g.fill( new Rectangle2D.Double( 0, 0, W, H ) );
+  public void drawActualScreen(Graphics2D g) {
+    // Paint Colour
+    g.setPaint(Color.white);
+    // Current size
+    W = getWidth();
+    H = getHeight();
+
+    g.setFont(new Font("Monospaced", Font.BOLD, 24));
+    g.fill(new Rectangle2D.Double(0, 0, W, H));
 
     // Draw state of system on display
-    String lines[] = textToDisplay.split("\n");
+    String[] lines = textToDisplay.split("\n");
     g.setPaint( Color.black );
-    for ( int i=0; i<lines.length; i++ )
-    {
-      g.drawString( lines[i], 0, 50 + 50*i );
+    for (int i=0; i<lines.length; i++) {
+      g.drawString(lines[i], 0, 50 + 50*i);
     }
-    
   }
-
   /**
    * Return a string of order numbers
    * @param map Contains the current state of the system
    * @param key The key of the list requested
    * @return As a string a list of order numbers.
    */
-  private String listOfOrders( Map<String, List<Integer> > map, String key )
-  {
-    String res = "";
-    if ( map.containsKey( key ))
-    {
+  private static StringBuilder listOfOrders(Map<String, List<Integer> > map, String key) {
+    StringBuilder res = new StringBuilder();
+    if (map.containsKey(key)) {
       List<Integer> orders = map.get(key);
-      for ( Integer i : orders )
-      {
-        res += " " + i;
+      for (Integer i : orders) {
+        res.append(" " + i);
       }
     } else {
-      res = "-No key-";
+      res.append("-No key-");
     }
     return res;
   }

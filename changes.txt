@@ -4,3 +4,4 @@ Adds a up and down number picker for the backdoor client
 Adds new layout to details on purchase
 Adds cancel button which if the product bought allows you to cancel and put the stock back
 Adds number slider to customer client to check how many are in stock
+Added labels to output logs to explain what thay are

@@ -33,6 +33,8 @@ public class CustomerView implements Observer
 
   // The components of the window
   private final JLabel theAction = new JLabel();
+  private final JLabel theQuantityLabel = new JLabel();
+  private final JLabel theOutputLabel = new JLabel();
   private final JTextField theInput = new JTextField();
   private final JTextArea theOutput = new JTextArea();
   private final JScrollPane theSP = new JScrollPane();
@@ -91,7 +93,7 @@ public class CustomerView implements Observer
     // Message area
     theAction.setBounds(110, 25 , 270, 20);
     // Blank
-    theAction.setText("");
+    theAction.setText("Enter product ID");
     // Add to canvas
     cp.add(theAction);
 
@@ -102,13 +104,25 @@ public class CustomerView implements Observer
     // Add to canvas
     cp.add(theInput);
 
+    // Amount label 
+    theQuantityLabel.setText("Amount");
+    // Set Location
+    theQuantityLabel.setBounds(330, 15, 50, 40);
+    // Added to canvas
+    cp.add(theQuantityLabel);
     // Amount spinner
     theQuantity.setBounds(330, 50, 50, 40);
     // Add to canvas
     cp.add(theQuantity);
 
+    // Scrolling pane label
+    theOutputLabel.setBounds(110, 100, 270, 20);
+    // Set text
+    theOutputLabel.setText("Product info");
+    // Display
+    cp.add(theOutputLabel);
     // Scrolling pane
-    theSP.setBounds(110, 100, 270, 160);
+    theSP.setBounds(110, 120, 270, 130);
     // Blank
     theOutput.setText("");
     // Uses font

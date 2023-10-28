@@ -26,19 +26,18 @@ public class WebCustomerClient extends JApplet {
       // supplied location
       : supplied;
 
-    System.out.println("URL " + stockURL );
+    System.out.println("URL " + stockURL);
     RemoteMiddleFactory mrf = new RemoteMiddleFactory();
-    mrf.setStockRInfo( stockURL );
+    mrf.setStockRInfo(stockURL);
     // Create GUI
     displayGUI(mrf);
   }
-
   /**
    * Create the GUI
    * @param mf The factory to create the objects
    */
   public void displayGUI(MiddleFactory mf) {
     DEBUG.trace("Need to add code");
-    //new CustomerGUI( this, mf, 0, 0 );
+    //new CustomerGUI(this, mf, 0, 0);
   }
 }
