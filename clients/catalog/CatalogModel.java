@@ -104,7 +104,7 @@ public class CatalogModel extends Observable {
     // Clear s. list
     theBasket.clear();
     // Set display
-    theAction = "Enter Product Number";
+    theAction = "Enter Product Name";
     // No picture
     thePic = null;
     setChanged();
