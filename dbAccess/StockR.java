@@ -14,7 +14,6 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
-import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
