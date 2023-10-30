@@ -105,4 +105,41 @@ public class F_StockR implements StockReader
     }
   }
 
+  /**
+   * Returns the number of items in the stock list
+   * @param number The product number
+   * @return whether the product is in stock
+   * @throws StockException
+   */
+  public synchronized boolean existsByName(String number) throws StockException {
+    DEBUG.trace("F_StockR:exists()" );
+    try {
+    if (aR_StockR == null) {
+      connect();
+    }
+    return aR_StockR.existsByName(number);
+    } catch (RemoteException e) {
+      aR_StockR = null;
+      throw new StockException("Net: " + e.getMessage());
+    }
+  }
+  
+  /**
+   * Returns details about the product in the stock list
+   * @param number The product number
+   * @return Stock details
+   * @throws StockException
+   */
+  public synchronized Product getDetailsByName(String number) throws StockException {
+    DEBUG.trace("F_StockR:getDetails()");
+    try {
+      if (aR_StockR == null) {
+        connect();
+      }
+      return aR_StockR.getDetailsByName(number);
+    } catch (RemoteException e) {
+      aR_StockR = null;
+      throw new StockException("Net: " + e.getMessage());
+    }
+  }
 }

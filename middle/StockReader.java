@@ -39,4 +39,20 @@ public interface StockReader
    */
   
   ImageIcon getImage(String pNum) throws StockException;
+
+  /**
+   * Checks if the product exits in the stock list
+   * @param pDesc Product description
+   * @return true if exists otherwise false
+   * @throws StockException if issue
+   */
+  boolean existsByName(String pDesc) throws StockException;
+
+  /**
+   * Returns details about the product in the stock list
+   * @param pDesc Product description
+   * @return StockNumber, Description, Price, Quantity
+   * @throws StockException if issue
+   */
+  Product getDetailsByName(String pDesc) throws StockException;
 }

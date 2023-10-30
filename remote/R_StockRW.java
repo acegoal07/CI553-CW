@@ -115,4 +115,24 @@ public class      R_StockRW
   {
     aStockRW.modifyStock( product );
   }
+
+  /**
+   * Returns the number of items in the stock list
+   * @param pNum The product number
+   * @return whether the product is in stock
+   * @throws StockException
+   */
+  public synchronized boolean existsByName(String pNum) throws StockException {
+    return aStockRW.exists( pNum );
+  }
+
+  /**
+   * Returns details about the product in the stock list
+   * @param pNum The product number
+   * @return Stock details
+   * @throws StockException
+   */
+  public synchronized Product getDetailsByName(String pNum) throws StockException {
+    return aStockRW.getDetailsByName( pNum );
+  }
 }

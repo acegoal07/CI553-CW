@@ -5,6 +5,9 @@ import clients.backDoor.BackDoorView;
 import clients.cashier.CashierController;
 import clients.cashier.CashierModel;
 import clients.cashier.CashierView;
+import clients.catalog.CatalogController;
+import clients.catalog.CatalogModel;
+import clients.catalog.CatalogView;
 import clients.collection.CollectController;
 import clients.collection.CollectModel;
 import clients.collection.CollectView;
@@ -51,6 +54,10 @@ class Main {
     if (MANY) {
       startCustomerGUI_MVC(mlf);
     }
+    startCatalogGUI_MVC(mlf);
+    if (MANY) {
+      startCatalogGUI_MVC(mlf);
+    }
     startCashierGUI_MVC(mlf);
     startCashierGUI_MVC(mlf);
     startBackDoorGUI_MVC(mlf);
@@ -77,6 +84,26 @@ class Main {
     CustomerModel model = new CustomerModel(mlf);
     CustomerView view = new CustomerView(window, mlf, pos.width, pos.height);
     CustomerController cont = new CustomerController(model, view);
+    view.setController(cont);
+
+    // Add observer to the model
+    model.addObserver(view);
+    // start Screen
+    window.setVisible(true);
+  }
+  /**
+   * start the catalog client
+   * @param mlf A factory to create objects to access the stock list
+   */
+  public void startCatalogGUI_MVC(MiddleFactory mlf) {
+    JFrame window = new JFrame();
+    window.setTitle("Catalog Client MVC");
+    window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    Dimension pos = PosOnScrn.getPos();
+
+    CatalogModel model = new CatalogModel(mlf);
+    CatalogView view = new CatalogView(window, mlf, pos.width, pos.height);
+    CatalogController cont = new CatalogController(model, view);
     view.setController(cont);
 
     // Add observer to the model

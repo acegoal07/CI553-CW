@@ -14,6 +14,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -42,10 +43,10 @@ public class StockR implements StockReader
     {
       DBAccess dbDriver = (new DBAccessFactory()).getNewDBAccess();
       dbDriver.loadDriver();
-    
+
       theCon  = DriverManager.getConnection
-                  ( dbDriver.urlOfDatabase(), 
-                    dbDriver.username(), 
+                  ( dbDriver.urlOfDatabase(),
+                    dbDriver.username(),
                     dbDriver.password() );
 
       theStmt = theCon.createStatement();
@@ -66,7 +67,7 @@ public class StockR implements StockReader
    * Returns a statement object that is used to process SQL statements
    * @return A statement object used to access the database
    */
-  
+
   protected Statement getStatementObject()
   {
     return theStmt;
@@ -91,7 +92,7 @@ public class StockR implements StockReader
   public synchronized boolean exists( String pNum )
          throws StockException
   {
-    
+
     try
     {
       ResultSet rs   = getStatementObject().executeQuery(
@@ -99,7 +100,7 @@ public class StockR implements StockReader
         "  where  ProductTable.productNo = '" + pNum + "'"
       );
       boolean res = rs.next();
-      DEBUG.trace( "DB StockR: exists(%s) -> %s", 
+      DEBUG.trace( "DB StockR: exists(%s) -> %s",
                     pNum, ( res ? "T" : "F" ) );
       return res;
     } catch ( SQLException e )
@@ -150,14 +151,14 @@ public class StockR implements StockReader
   public synchronized ImageIcon getImage( String pNum )
          throws StockException
   {
-    String filename = "default.jpg";  
+    String filename = "default.jpg";
     try
     {
       ResultSet rs   = getStatementObject().executeQuery(
         "select picture from ProductTable " +
         "  where  ProductTable.productNo = '" + pNum + "'"
       );
-      
+
       boolean res = rs.next();
       if ( res )
         filename = rs.getString( "picture" );
@@ -167,9 +168,54 @@ public class StockR implements StockReader
       DEBUG.error( "getImage()\n%s\n", e.getMessage() );
       throw new StockException( "SQL getImage: " + e.getMessage() );
     }
-    
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
   }
 
+  /**
+   * Returns a list of all the product numbers in the stock list
+   * @param pDesc The product description
+   * @return An array of Strings containing the product numbers
+   * @throws StockException
+   */
+  public synchronized boolean existsByName(String pDesc) throws StockException {
+    try {
+      ResultSet rs   = getStatementObject().executeQuery(
+        "select price from ProductTable " +
+        "  where  LOWER(ProductTable.description) LIKE LOWER('%" + pDesc + "%')"
+      );
+      boolean res = rs.next();
+      DEBUG.trace( "DB StockR: exists(%s) -> %s", pDesc, (res ? "T" : "F"));
+      return res;
+    } catch (SQLException e) {
+      throw new StockException("SQL exists: " + e.getMessage());
+    }
+  }
+  
+  /**
+   * Returns a list of all the product numbers in the stock list
+   * @param pNum The product description
+   * @return An array of Strings containing the product numbers
+   * @throws StockException
+   */
+  public synchronized Product getDetailsByName(String pNum) throws StockException {
+    try {
+    Product dt = new Product("0", "", 0.00, 0 );
+    ResultSet rs = getStatementObject().executeQuery(
+      "select * " +
+      " from ProductTable, StockTable " +
+      " where  LOWER(ProductTable.description) LIKE LOWER('%" + pNum + "%')"
+    );
+    if (rs.next()) {
+      dt.setProductNum(rs.getString("productNo") + "");
+      dt.setDescription(pNum);
+      dt.setPrice(rs.getDouble("price"));
+      dt.setQuantity(rs.getInt("stockLevel"));
+    }
+    rs.close();
+    return dt;
+    } catch (SQLException e) {
+      throw new StockException("SQL getDetails: " + e.getMessage());
+    }
+  }
 }

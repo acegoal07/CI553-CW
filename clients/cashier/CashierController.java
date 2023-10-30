@@ -7,7 +7,7 @@ package clients.cashier;
 
 public class CashierController {
   private CashierModel model;
-  private CashierView  view;
+  private CashierView view;
 
   /**
    * Constructor

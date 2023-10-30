@@ -24,10 +24,10 @@ public class CashierView implements Observer {
    * Name of buttons
    */
   class name {
-    public static final String CHECK  = "Check";
-    public static final String BUY  = "Buy";
-    public static final String BOUGHT  = "Bought";
-    public static final String CANCEL  = "Cancel";
+    public static final String CHECK = "Check";
+    public static final String BUY = "Buy";
+    public static final String BOUGHT = "Bought";
+    public static final String CANCEL = "Cancel";
   }
 
   private final JLabel theAction = new JLabel();
@@ -42,9 +42,9 @@ public class CashierView implements Observer {
   private final JButton theBtBought= new JButton(name.BOUGHT);
   private final JSpinner theQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
 
-  private StockReadWriter theStock = null;
-  private OrderProcessing theOrder = null;
-  private CashierController cont = null;
+  private StockReadWriter theStock;
+  private OrderProcessing theOrder;
+  private CashierController cont;
 
   /**
    * Construct the view

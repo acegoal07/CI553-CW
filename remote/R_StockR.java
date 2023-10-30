@@ -65,4 +65,25 @@ public class      R_StockR
     return aStockR.getImage( pNum );
   }
 
+  /**
+   * Checks if the product exits in the stock list
+   * @param pNum The product number
+   * @return true if exists otherwise false
+   * @throws RemoteException 
+   * @throws StockException 
+   */
+  public synchronized boolean existsByName(String pNum) throws RemoteException, StockException {
+    return aStockR.existsByName(pNum);
+  }
+
+  /**
+   * Returns details about the product in the stock list
+   * @param pNum The product number
+   * @return StockNumber, Description, Price, Quantity
+   * @throws RemoteException
+   * @throws StockException
+   */
+  public synchronized Product getDetailsByName(String pNum) throws RemoteException, StockException {
+    return aStockR.getDetailsByName(pNum);
+  }
 }
