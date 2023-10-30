@@ -71,7 +71,10 @@ public class CatalogView implements Observer
     // Check button
     theBtCheck.setBounds(16, 25+60*0, 80, 40);
     // Call back code
-    theBtCheck.addActionListener(e -> cont.doCheckByName(theInput.getText()));
+    theBtCheck.addActionListener(e -> {
+      cont.doCheckByName(theInput.getText());
+      theInput.setText("");
+    });
     // Add to canvas
     cp.add(theBtCheck);
 
@@ -102,7 +105,7 @@ public class CatalogView implements Observer
     // Scrolling pane label
     theOutputLabel.setBounds(110, 100, 270, 20);
     // Set text
-    theOutputLabel.setText("Product info");
+    theOutputLabel.setText("Search results");
     // Display
     cp.add(theOutputLabel);
     // Scrolling pane

@@ -14,6 +14,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -193,26 +194,37 @@ public class StockR implements StockReader
   
   /**
    * Returns a list of all the product numbers in the stock list
-   * @param pNum The product description
+   * @param pNam The product description
    * @return An array of Strings containing the product numbers
    * @throws StockException
    */
-  public synchronized Product getDetailsByName(String pNum) throws StockException {
+  public synchronized ArrayList<Product> getDetailsByName(String pNam) throws StockException {
     try {
-    Product dt = new Product("0", "", 0.00, 0 );
     ResultSet rs = getStatementObject().executeQuery(
-      "select * " +
-      " from ProductTable, StockTable " +
-      " where  LOWER(ProductTable.description) LIKE LOWER('%" + pNum + "%')"
+      "SELECT * " +
+      "FROM ProductTable pt " +
+      "INNER JOIN StockTable st " +
+      "ON pt.productNo = st.productNo " +
+      "WHERE LOWER(pt.description) LIKE LOWER('%" + pNam + "%')"
     );
-    if (rs.next()) {
-      dt.setProductNum(rs.getString("productNo") + "");
-      dt.setDescription(pNum);
-      dt.setPrice(rs.getDouble("price"));
-      dt.setQuantity(rs.getInt("stockLevel"));
+
+    ArrayList<Product> products = new ArrayList<>();
+
+    while(rs.next()) {
+      products.add(
+        new Product(
+          rs.getString("productNo"),
+          rs.getString("description"),
+          rs.getDouble("price"),
+          rs.getInt("stockLevel")
+        )
+      );
     }
+
     rs.close();
-    return dt;
+
+    return products;
+
     } catch (SQLException e) {
       throw new StockException("SQL getDetails: " + e.getMessage());
     }

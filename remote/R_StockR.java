@@ -6,6 +6,7 @@ import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -83,7 +84,7 @@ public class      R_StockR
    * @throws RemoteException
    * @throws StockException
    */
-  public synchronized Product getDetailsByName(String pNum) throws RemoteException, StockException {
+  public synchronized ArrayList<Product> getDetailsByName(String pNum) throws RemoteException, StockException {
     return aStockR.getDetailsByName(pNum);
   }
 }

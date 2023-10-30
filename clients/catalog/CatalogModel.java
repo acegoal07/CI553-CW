@@ -7,6 +7,8 @@ import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockException;
 import middle.StockReader;
+
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.*;
 import java.util.Observable;
@@ -50,44 +52,44 @@ public class CatalogModel extends Observable {
   public Basket getBasket() {
     return theBasket;
   }
-
-
+  /**
+   * return the StockReader
+   * @param productName The name of the product
+   */
   public void doCheckByName(String productName) {
     // Clear s. list
       theBasket.clear();
       // Product name.
       String theAction = "";
       pn = productName;
-      // & quantity
-      int amount  = 1;
       try {
         // Stock Exists?
           if (theStock.existsByName(pn)) {
             // Product
-            Product pr = theStock.getDetailsByName(pn);
-            //  In stock?
-            if (pr.getQuantity() >= amount) {
-              // Display
-                theAction =
-                  String.format("%s : %7.2f (%2d) ",
-                    // description
-                    pr.getDescription(),
-                    // price
-                    pr.getPrice(),
-                    // quantity
-                    pr.getQuantity()
-                    );
+            ArrayList<Product> pr = theStock.getDetailsByName(pn);
+            if (!pr.isEmpty()) {
+              for (Product p : pr) {
+                if (p.getQuantity() >= 1) {
                   // Require 1
-              pr.setQuantity( amount );
-              //   Add to basket
-              theBasket.add( pr );
+                  p.setQuantity(p.getQuantity());
+                  //   Add to basket
+                  theBasket.add(p);
+                } else {
+                  // Require 1
+                  p.setQuantity(0);
+                  // Add to basket
+                  theBasket.add(p);
+                }
+              }
+              // Set display
+              theAction = "Search results for  " + pn;
             } else {
-              // Inform product not in stock
-              theAction = pr.getDescription() + "not in stock";
+              // Inform Unknown product
+              theAction = "No results found for " + pn;
             }
           } else {
-            // Inform Unknown product number
-            theAction = "Unknown product number " + pn;
+            // Inform Unknown product
+            theAction = "No results found for " + pn;
           }
       } catch(StockException e) {
           DEBUG.error("CustomerClient.doCheck()\n%s", e.getMessage());
@@ -95,7 +97,6 @@ public class CatalogModel extends Observable {
       setChanged();
       notifyObservers(theAction);
   }
-
   /**
    * Clear the products from the basket
    */
