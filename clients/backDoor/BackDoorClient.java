@@ -15,7 +15,7 @@ public class BackDoorClient {
 
     // URL of stock RW default or supplied location
     String stockURL = args.length < 1 ? Names.STOCK_RW : args[0];
-      
+
     // URL of order default or supplied location
     String orderURL = args.length < 2 ? Names.ORDER : args[1];
 

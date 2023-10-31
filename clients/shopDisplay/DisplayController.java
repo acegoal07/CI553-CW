@@ -11,7 +11,7 @@ public class DisplayController
   private DisplayView view;
   /**
    * Constructor
-   * @param model The model 
+   * @param model The model
    * @param view  The view from which the interaction came
    */
   public DisplayController(DisplayModel model, DisplayView view) {

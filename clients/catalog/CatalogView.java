@@ -1,7 +1,5 @@
 package clients.catalog;
 
-import catalogue.Basket;
-import clients.Picture;
 import middle.MiddleFactory;
 import middle.StockReader;
 

@@ -35,7 +35,7 @@ public class CollectModel extends Observable {
   public void doCollect(String orderNumber) {
     int orderNum = 0;
     // Product no.
-    String on = orderNumber.trim();         
+    String on = orderNumber.trim();
     try {
       // Convert
       orderNum = Integer.parseInt(on);

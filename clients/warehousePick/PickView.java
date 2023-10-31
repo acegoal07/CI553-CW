@@ -30,13 +30,11 @@ public class PickView implements Observer {
   private static final int W = 400;
 
   private final JLabel theAction = new JLabel();
-  private final JLabel theOutLabel = new JLabel();
   private final JTextArea theOutput = new JTextArea();
   private final JScrollPane theSP = new JScrollPane();
   private final JButton theBtPicked = new JButton(name.PICKED);
 
   private OrderProcessing theOrder;
-
   private PickController cont;
 
   /**
@@ -63,7 +61,7 @@ public class PickView implements Observer {
     rootWindow.setSize(W, H);
     rootWindow.setLocation(x, y);
 
-    // Check Button
+    // Pick Button
     theBtPicked.setBounds(16, 25+60*0, 80, 40);
     // Call back code
     theBtPicked.addActionListener(e -> cont.doPick());

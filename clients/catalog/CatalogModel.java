@@ -9,7 +9,6 @@ import middle.StockException;
 import middle.StockReader;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import javax.swing.*;
 import java.util.Observable;
 

@@ -34,8 +34,8 @@ public class CollectView implements Observer {
   private final JScrollPane theSP = new JScrollPane();
   private final JButton theBtCollect = new JButton(name.COLLECT);
 
-  private OrderProcessing theOrder = null;
-  private CollectController cont = null;
+  private OrderProcessing theOrder;
+  private CollectController cont;
 
   /**
    * Construct the view

@@ -61,29 +61,23 @@ public class StockR implements StockReader
       throw new StockException("Can not load database driver.");
     }
   }
-
-
   /**
    * Returns a statement object that is used to process SQL statements
    * @return A statement object used to access the database
    */
-
   protected Statement getStatementObject()
   {
     return theStmt;
   }
-
   /**
    * Returns a connection object that is used to process
    * requests to the DataBase
    * @return a connection object
    */
-
   protected Connection getConnectionObject()
   {
     return theCon;
   }
-
   /**
    * Checks if the product exits in the stock list
    * @param pNum The product number
@@ -108,7 +102,6 @@ public class StockR implements StockReader
       throw new StockException( "SQL exists: " + e.getMessage() );
     }
   }
-
   /**
    * Returns details about the product in the stock list.
    *  Assumed to exist in database.
@@ -141,7 +134,6 @@ public class StockR implements StockReader
       throw new StockException( "SQL getDetails: " + e.getMessage() );
     }
   }
-
   /**
    * Returns 'image' of the product
    * @param pNum The product number
@@ -171,7 +163,6 @@ public class StockR implements StockReader
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
   }
-
   /**
    * Returns a list of all the product numbers in the stock list
    * @param pDesc The product description
@@ -191,7 +182,6 @@ public class StockR implements StockReader
       throw new StockException("SQL exists: " + e.getMessage());
     }
   }
-  
   /**
    * Returns a list of all the product numbers in the stock list
    * @param pNam The product description
@@ -200,31 +190,28 @@ public class StockR implements StockReader
    */
   public synchronized ArrayList<Product> getDetailsByName(String pNam) throws StockException {
     try {
-    ResultSet rs = getStatementObject().executeQuery(
-      "SELECT * " +
-      "FROM ProductTable pt " +
-      "INNER JOIN StockTable st " +
-      "ON pt.productNo = st.productNo " +
-      "WHERE LOWER(pt.description) LIKE LOWER('%" + pNam + "%')"
-    );
-
-    ArrayList<Product> products = new ArrayList<>();
-
-    while(rs.next()) {
-      products.add(
-        new Product(
-          rs.getString("productNo"),
-          rs.getString("description"),
-          rs.getDouble("price"),
-          rs.getInt("stockLevel")
-        )
+      ResultSet rs = getStatementObject().executeQuery(
+        "SELECT * " +
+        "FROM ProductTable pt " +
+        "INNER JOIN StockTable st " +
+        "ON pt.productNo = st.productNo " +
+        "WHERE LOWER(pt.description) LIKE LOWER('%" + pNam + "%')"
       );
-    }
 
-    rs.close();
+      ArrayList<Product> products = new ArrayList<>();
 
-    return products;
-
+      while(rs.next()) {
+        products.add(
+          new Product(
+            rs.getString("productNo"),
+            rs.getString("description"),
+            rs.getDouble("price"),
+            rs.getInt("stockLevel")
+          )
+        );
+      }
+      rs.close();
+      return products;
     } catch (SQLException e) {
       throw new StockException("SQL getDetails: " + e.getMessage());
     }

@@ -39,7 +39,7 @@ public class DisplayClient {
 
     // Add observer to the model
     model.addObserver(view);
-    // Display Screen       
-    window.setVisible(true);         
+    // Display Screen
+    window.setVisible(true);
   }
 }

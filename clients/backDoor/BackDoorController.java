@@ -11,7 +11,7 @@ public class BackDoorController {
 
   /**
    * Constructor
-   * @param model The model 
+   * @param model The model
    * @param view The view from which the interaction came
    */
   public BackDoorController(BackDoorModel model, BackDoorView view) {

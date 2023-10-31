@@ -27,7 +27,7 @@ public class CustomerClient {
    */
   private static void displayGUI(MiddleFactory mf) {
     JFrame  window = new JFrame();
-    window.setTitle( "Customer Client (MVC RMI)" );
+    window.setTitle("Customer Client (MVC RMI)" );
     window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     CustomerModel model = new CustomerModel(mf);

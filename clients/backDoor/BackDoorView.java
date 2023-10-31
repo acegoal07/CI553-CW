@@ -13,7 +13,7 @@ import javax.swing.*;
  * @version 1.0
  */
 public class BackDoorView implements Observer {
-  
+
   /**
    * Name of buttons
    */
@@ -66,9 +66,6 @@ public class BackDoorView implements Observer {
     rootWindow.setSize(W, H);
     rootWindow.setLocation(x, y);
 
-    // Font f is
-    Font f = new Font("Monospaced",Font.PLAIN,12);
-
     // Buy button
     theBtQuery.setBounds(16, 25+60*0, 80, 40);
     // Call back code
@@ -104,7 +101,7 @@ public class BackDoorView implements Observer {
     // Add to canvas
     cp.add(theInput);
 
-    // Amount label 
+    // Amount label
     theQuantityLabel.setText("Amount");
     // Set Location
     theQuantityLabel.setBounds(330, 15, 50, 40);
@@ -126,7 +123,7 @@ public class BackDoorView implements Observer {
     // Blank
     theOutput.setText("");
     // Uses font
-    theOutput.setFont(f);
+    theOutput.setFont(new Font("Monospaced",Font.PLAIN,12));
     // Add to canvas
     cp.add(theSP);
     // In TextArea

@@ -87,7 +87,7 @@ public class CustomerView implements Observer
       cont.doClear();
       theInput.setText("");
     });
-      // Add to canvas
+    // Add to canvas
     cp.add(theBtClear);
 
     // Message area
@@ -104,7 +104,7 @@ public class CustomerView implements Observer
     // Add to canvas
     cp.add(theInput);
 
-    // Amount label 
+    // Amount label
     theQuantityLabel.setText("Amount");
     // Set Location
     theQuantityLabel.setBounds(330, 15, 50, 40);

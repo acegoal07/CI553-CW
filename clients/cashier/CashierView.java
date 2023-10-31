@@ -89,7 +89,7 @@ public class CashierView implements Observer {
     });
     // Add to canvas
     cp.add(theBtBuy);
-    
+
     // Bought Button
     theBtBought.setBounds(16, 25+60*2, 80, 40);
     // Call back code
@@ -118,7 +118,7 @@ public class CashierView implements Observer {
     // Add to canvas
     cp.add(theInput);
 
-    // Amount label 
+    // Amount label
     theQuantityLabel.setText("Amount");
     // Set Location
     theQuantityLabel.setBounds(330, 15, 50, 40);

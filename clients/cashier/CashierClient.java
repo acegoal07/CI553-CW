@@ -1,6 +1,5 @@
 package clients.cashier;
 
-import catalogue.*;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
