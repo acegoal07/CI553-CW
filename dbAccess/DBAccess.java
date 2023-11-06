@@ -1,33 +1,37 @@
 package dbAccess;
 
 /**
-  * Implements generic management of a database.
-  * @author  Mike Smith University of Brighton
-  * @version 2.0
-  */
- 
-/**
- * Base class that defines the access to the database driver
+ * Implements generic management of a database.
+ * @author  Mike Smith University of Brighton
+ * @version 2.0
  */
-public class DBAccess
-{
-  public void loadDriver() throws Exception
-  {
+public class DBAccess {
+  /**
+   * Load the driver for the database
+   * @throws Exception if driver not found
+   */
+  public void loadDriver() throws Exception {
     throw new RuntimeException("No driver");
   }
-
-  public String urlOfDatabase()
-  {
+  /**
+   * Return the URL of the database
+   * @return URL
+   */
+  public String urlOfDatabase() {
     return "";
   }
-
-  public String username()
-  {
+  /**
+   * Return the username for the database
+   * @return username
+   */
+  public String username() {
     return "";
   }
-
-  public String password()
-  {
+  /**
+   * Return the password for the database
+   * @return password
+   */
+  public String password() {
     return "";
   }
 }

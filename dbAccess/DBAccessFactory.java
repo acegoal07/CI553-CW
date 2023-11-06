@@ -13,21 +13,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
-  * Manages the starting up of the database.
-  * The database may be Access, mySQL etc.
-  */
-
-// Pattern: Abstract Factory
-//          Fix to be 
-
+ * Manages the starting up of the database.
+ * The database may be Access, mySQL etc.
+ */
 public class DBAccessFactory
 {
   private static String theAction   = "";
   private static String theDataBase = "";
   private static String theOS       = "";
 
-  public static void setAction( String name )
-  {
+  public static void setAction( String name ) {
     theAction = name;
   }
 
@@ -142,4 +137,3 @@ public class DBAccessFactory
   }
 
 }
-
