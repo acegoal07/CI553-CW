@@ -76,6 +76,9 @@ public class CashierView implements Observer {
     theBtCheck.setBounds(16, 25+60*0, 80, 40);
     // Call back code
     theBtCheck.addActionListener(e -> cont.doCheck(theInput.getText(), (int) theQuantity.getValue()));
+    // Set colour
+    theBtCheck.setBackground(Color.CYAN);
+    theBtCheck.setForeground(Color.BLACK);
     // Add to canvas
     cp.add(theBtCheck);
 
@@ -87,6 +90,9 @@ public class CashierView implements Observer {
       theInput.setText("");
       theQuantity.setValue(1);
     });
+    // Set colour
+    theBtBuy.setBackground(Color.YELLOW);
+    theBtBuy.setForeground(Color.BLACK);
     // Add to canvas
     cp.add(theBtBuy);
 
@@ -94,6 +100,9 @@ public class CashierView implements Observer {
     theBtBought.setBounds(16, 25+60*2, 80, 40);
     // Call back code
     theBtBought.addActionListener(e -> cont.doBought());
+    // Set colour
+    theBtBought.setBackground(Color.GREEN);
+    theBtBought.setForeground(Color.BLACK);
     // Add to canvas
     cp.add(theBtBought);
 
@@ -101,6 +110,9 @@ public class CashierView implements Observer {
     theBtCancel.setBounds(16, 25+60*3, 80, 40);
     // Call back code
     theBtCancel.addActionListener(e -> cont.doCancel());
+    // Set colour
+    theBtCancel.setBackground(Color.RED);
+    theBtCancel.setForeground(Color.WHITE);
     // Add to canvas
     cp.add(theBtCancel);
 
