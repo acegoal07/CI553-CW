@@ -138,7 +138,7 @@ public class CatalogView implements Observer
     CatalogModel model = (CatalogModel) modelC;
     String message = (String) arg;
     theAction.setText(message);
-    theOutput.setText(model.getBasket().getDetails());
+    theOutput.setText(model.getBasket().getCatalogDetails());
     // Focus is here
     theInput.requestFocus();
   }

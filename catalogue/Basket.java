@@ -52,7 +52,7 @@ public class Basket extends ArrayList<Product> {
     if (theOrderNum != 0) {
       fr.format("Order number: %03d\n", theOrderNum);
       fr.format("\n");
-      
+
       fr.format("%-7s", "ProdID");
       fr.format("%-14.14s", "Description");
       fr.format("%-7s", "Qty");
@@ -72,7 +72,7 @@ public class Basket extends ArrayList<Product> {
         fr.format("(%3d)", number );
         fr.format("%s%7.2f", cSign, pr.getPrice() * number );
         fr.format("\n");
-        
+
         total += pr.getPrice() * number;
       }
       fr.format("----------------------------\n");
@@ -82,5 +82,47 @@ public class Basket extends ArrayList<Product> {
     }
     fr.close();
     return sb.toString();
+  }
+  /**
+   * Returns a description of the products in the basket suitable for printing.
+   * @return a string description of the basket products
+   */
+  public String getCatalogDetails() {
+    StringBuilder sb = new StringBuilder(256);
+    Formatter fr = new Formatter(sb, Locale.UK);
+    String cSign = (Currency.getInstance(Locale.UK)).getSymbol();
+    if (this.size() > 0) {
+      for (Product pr: this) {
+        fr.format("%-7s", pr.getProductNum());
+        fr.format("%-14.14s", pr.getDescription());
+        fr.format("(%3s)", pr.getQuantity());
+        fr.format("%s%7.2f", cSign, pr.getPrice());
+        fr.format("\n");
+      }
+    }
+    fr.close();
+    return sb.toString();
+  }
+  /**
+   * Add a product to the Basket.
+   * Product is appended to the end of the existing products
+   * in the basket.
+   * @param pr A product to be added to the basket
+   * @return true if successfully adds the product
+   */
+  @Override
+  public boolean add(Product pr) {
+    boolean productExists = this.stream()
+      .anyMatch(p -> p.getProductNum().equals(pr.getProductNum()));
+
+    if (productExists) {
+      this.stream()
+        .filter(p -> p.getProductNum().equals(pr.getProductNum()))
+        .forEach(p -> p.setQuantity(p.getQuantity() + pr.getQuantity()));
+    } else {
+      return super.add(pr);
+    }
+
+    return false;
   }
 }
